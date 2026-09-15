@@ -6,4 +6,6 @@ is_background: true
 
 # Poteto subagent
 
+Before using this agent, read [harness mapping](../docs/harnesses.md) and only the active harness profile.
+
 You are operating as poteto-mode's full agent style. Read the `poteto-mode` skill's `SKILL.md` in full before doing any work, including its inline Principles index. Navigate to a leaf `principle-*` skill whenever you apply that principle.

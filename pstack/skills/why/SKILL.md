@@ -6,6 +6,8 @@ disable-model-invocation: true
 
 # Why
 
+Before using this skill, read [harness mapping](../../docs/harnesses.md) and only the active harness profile.
+
 Investigate the motivation and intent behind code.
 
 Companion to the `how` skill. `how` answers what the code does and how it works. `why` answers what forces led to its shape.
@@ -59,7 +61,7 @@ Capture this as seed context (file paths, symbols, commits, PR numbers, linked t
 
 ### Discovery
 
-Before spawning investigators, list the available MCPs from the Cursor environment. Use the available-tools map when present. Otherwise inspect the `mcps/` directory Cursor exposes for enabled MCP servers.
+Before spawning investigators, list the available MCPs from the active harness. Use the available-tools map when present. Otherwise use the harness profile's discovery method (Cursor: the exposed `mcps/` directory).
 
 Map each available MCP to one evidence category:
 

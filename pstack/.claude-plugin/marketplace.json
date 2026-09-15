@@ -1,0 +1,16 @@
+{
+  "name": "pstack-local",
+  "owner": {
+    "name": "Lauren Tan"
+  },
+  "plugins": [
+    {
+      "name": "pstack",
+      "source": "./",
+      "description": "Engineering workflows, review and principles for coding agents."
+    }
+  ],
+  "metadata": {
+    "description": "Local installation of pstack engineering workflows."
+  }
+}
