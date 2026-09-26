@@ -6,6 +6,8 @@ disable-model-invocation: true
 
 # Show me your work
 
+Before using this skill, read [harness mapping](../../docs/harnesses.md) and only the active harness profile.
+
 Keep one canonical log.
 
 ## The format
@@ -54,7 +56,7 @@ Commit it only when the work is ambitious enough that a reviewer needs the trail
 
 ## Audit the log against the transcript
 
-At the end of the run, before handing back, check the log told the truth. Read this run's transcript under the active workspace's `agent-transcripts/` directory (the system prompt names the path). Don't glob across `~/.cursor/projects/*/`. That reads unrelated private chats. Walk this run's rows against what actually happened. Each stretch of them begins at one of this run's `start` rows, or at the first row if this run created the log, and ends at the next `start` row of another run:
+At the end of the run, before handing back, check the log told the truth. Read this run's transcript under the active workspace's transcript location from the harness profile. Don't glob across other workspaces. That reads unrelated private chats. Walk the log against what actually happened. Each stretch of rows begins at one of this run's `start` rows, or at the first row if this run created the log, and ends at the next `start` row of another run:
 
 - Check that every row maps to a real decision or action.
 - Check that each row's evidence resolves and shows what the row claims.

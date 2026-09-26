@@ -6,6 +6,8 @@ disable-model-invocation: true
 
 # Interrogate
 
+Before using this skill, read [harness mapping](../../docs/harnesses.md) and only the active harness profile.
+
 Spawn one reviewer per configured model to adversarially review code changes. Each model gets the same prompt and rubric. The adversarial signal comes from model diversity, not assigned personas.
 
 The deliverable is a synthesized verdict. Do NOT auto-apply changes.
@@ -33,7 +35,7 @@ Write one clear paragraph. If you're unsure about the intent, ask the user befor
 
 ## Step 3, Spawn Reviewers
 
-Launch all reviewers in a single message using the Task tool. Use the `interrogate reviewers` line in `~/.cursor/rules/pstack-models.mdc`, one reviewer per entry, extending or shrinking the Reviewer A/B/C labels below to the configured entry count. If the rule or that line is missing, use the table defaults.
+Launch all reviewers in a single message using the Task tool. Use the `interrogate reviewers` line in `<model-config>`, one reviewer per entry, extending or shrinking the Reviewer A/B/C labels below to the configured entry count. If the file or that line is missing, use the table defaults.
 
 | Subagent | Default model |
 |----------|---------------|
