@@ -6,6 +6,8 @@ disable-model-invocation: true
 
 # No comments
 
+Before using this skill, read [harness mapping](../../docs/harnesses.md) and only the active harness profile.
+
 Spawn Comment Sicko. Act on accepted findings.
 
 Defer to Comment Sicko's fresh perspective.

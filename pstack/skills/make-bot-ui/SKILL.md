@@ -1,16 +1,30 @@
 ---
-name: Make Bot UI
+name: make-bot-ui
 description: >-
   Use when building a custom UI (page, dashboard, buttons) that should wake a
-  Grok Bot over a webhook, when the user must provide a webhook sender key, or
+  bot over a webhook, when the user must provide a webhook sender key, or
   when exposing that UI on Tailscale.
 disable-model-invocation: true
 ---
 # How to make a bot UI
 
+Read [harness compatibility](../../docs/harnesses.md) and the active-harness reference before creating a routine or requesting secrets.
+
+## Choose a supported webhook runner
+
+The procedure below describes the Cursor routine tools, UI, authentication headers, and wake payload. Use it only when the active Cursor environment actually exposes `update_state` routine creation, webhook triggers, and the `SendToUser` secret-request flow. Tool names and UI can differ between Cursor products. Verify them before following the procedure.
+
+For Codex, Claude, Gemini, or Copilot, use an available documented webhook provider or a configured CI event receiver. The provider must define creation, authentication, payload delivery, and run status. Do not call Cursor tools, guess a Cursor webhook URL, or treat a scheduled task as a webhook endpoint. Use the provider's documented headers and payload format instead of the Cursor-specific ones below.
+
+If no webhook runner is available, report the missing capability and leave the integration unconfigured. A local server can receive button clicks, but it does not itself create an agent automation. Use the `automate` skill to configure an available runner before claiming that a click wakes a bot.
+
+For any provider, keep the sender key on the server and use its supported secret store or a user-populated untracked config file. Never ask for the secret in chat. Probe one harmless payload and verify that the intended runner receives it before calling the UI live.
+
+## Cursor routine procedure
+
 Build a page the user clicks. A server on this computer POSTs JSON to a webhook routine. The bot wakes with that JSON. Keep the sender key on the server. Do not put the sender key in the browser, in chat, or in this skill.
 
-## Create the webhook routine
+### Create the webhook routine
 
 Call `update_state` with target `routine` and action `create`. Set these fields:
 
@@ -22,7 +36,7 @@ The folder slug is the kebab-case form of the name.
 Use that slug later as the secret `connector`.
 The create result does not include the sender key.
 
-## Copy the URL and the sender key
+### Copy the URL and the sender key
 
 The webhook URL and the sender key live on that routine's panel after the routine exists. Do not invent other clicks.
 
@@ -36,7 +50,7 @@ Tell the user to do this:
 
 The URL looks like `https://api2.cursor.sh/automations/webhook/<id>` with no query string. Copy the URL from the routine. Do not guess the id.
 
-## Request the sender key
+### Request the sender key
 
 Do not accept the sender key in chat. Send a secret-request, then stop. That card is the whole turn.
 
@@ -50,9 +64,9 @@ secret.field: key
 
 After the user submits the secret, you do not see the value. The value is in that connector's credential file. Copy the value into the server config. Do not print the value. Do not log the value.
 
-## Host the page on this computer
+### Host the page on this computer
 
-Store `{url, key}` in that UI's own directory. Buttons POST to this local server. The local server, not the browser, POSTs to the Grok Bot webhook.
+Store `{url, key}` in that UI's own directory. Buttons POST to this local server. The local server, not the browser, POSTs to the bot webhook.
 
 Bind the server to `0.0.0.0:<port>`, not `127.0.0.1`. Tailscale peers cannot reach a localhost-only bind.
 
@@ -72,7 +86,7 @@ Use an action that the prompt ignores.
 
 If a POST can fail, append the same JSON to a local log. Drain that log from the routine. Do not poll as the primary path. Do not send media bytes on the webhook.
 
-## Put the page on the tailnet
+### Put the page on the tailnet
 
 Agents on this computer share one Tailscale node. Do not create a second hostname on a node that is already online.
 
@@ -102,7 +116,7 @@ Probe `http://<100.x.x.x>:<port>/` and expect HTTP 200.
 
 If the login URL expires, run `tailscale up` again and send the new URL.
 
-## Handle the webhook wake
+### Handle the webhook wake
 
 The wake is a `[routine]` turn for that webhook routine. It includes a `<webhook_event>` block with `headers` (`content-type`, `user-agent`), `body_digest` (sha256), `body`, and `timestamp_ms`.
 `body` is the JSON object as a string. The fields are in `body`, not as top-level chat text.
